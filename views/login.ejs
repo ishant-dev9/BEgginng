@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Productivity App</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Log in to manage your tasks and deadlines.</p>
+
+      <% if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
+
+      <form method="POST" action="/login" class="form-stack">
+        <label>
+          Email
+          <input type="email" name="email" required value="<%= values.email || '' %>" />
+        </label>
+
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+
+        <button type="submit">Log In</button>
+      </form>
+
+      <p class="switch-link">New here? <a href="/signup">Create account</a></p>
+    </section>
+  </main>
+</body>
+</html>

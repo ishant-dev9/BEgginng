@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Productivity App</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Productivity Dashboard</h1>
+      <p>Hi <strong><%= user.name %></strong>, stay focused and ship your goals.</p>
+    </div>
+    <form method="POST" action="/logout">
+      <button class="secondary" type="submit">Logout</button>
+    </form>
+  </header>
+
+  <main class="dashboard-grid">
+    <section class="card">
+      <h2>Add a Task</h2>
+      <% if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
+
+      <form method="POST" action="/tasks" class="form-stack">
+        <label>
+          Title
+          <input type="text" name="title" required placeholder="e.g. Finish project proposal" />
+        </label>
+
+        <label>
+          Details
+          <textarea name="details" rows="4" placeholder="Optional notes"></textarea>
+        </label>
+
+        <label>
+          Deadline
+          <input type="datetime-local" name="deadline" />
+        </label>
+
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Your Tasks</h2>
+      <% if (!tasks.length) { %>
+        <p class="empty">No tasks yet. Add your first task on the left.</p>
+      <% } %>
+
+      <ul class="task-list">
+        <% tasks.forEach((task) => { %>
+          <li class="task-item <%= task.completed ? 'done' : '' %>">
+            <div>
+              <h3><%= task.title %></h3>
+              <% if (task.details) { %>
+                <p><%= task.details %></p>
+              <% } %>
+              <p class="meta">
+                <% if (task.deadline) { %>
+                  Deadline: <%= new Date(task.deadline).toLocaleString() %>
+                <% } else { %>
+                  No deadline
+                <% } %>
+              </p>
+            </div>
+
+            <div class="task-actions">
+              <form method="POST" action="/tasks/<%= task.id %>/toggle">
+                <button type="submit" class="secondary"><%= task.completed ? 'Mark as pending' : 'Mark as done' %></button>
+              </form>
+              <form method="POST" action="/tasks/<%= task.id %>/delete">
+                <button type="submit" class="danger">Delete</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
